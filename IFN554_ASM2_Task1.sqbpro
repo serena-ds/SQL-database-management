@@ -1,0 +1,81 @@
+CREATE TABLE Store (
+	storeId TEXT PRIMARY KEY NOT NULL CHECK (LENGTH (storeID) = 5 AND storeId NOT GLOB '*[^0-9]*'),
+	sName TEXT NOT NULL,
+	sAddress TEXT,
+	sPostCode TEXT CHECK (LENGTH (sPostCode) = 4 AND sPostCode NOT GLOB '*[^0-9]*')
+);
+
+CREATE TABLE StoreEmployee (
+	employeeID TEXT PRIMARY KEY NOT NULL CHECK (LENGTH (employeeID) = 5 AND employeeID NOT GLOB '*[^0-9]*'),
+	eName TEXT NOT NULL,
+	eAddress TEXT,
+	ePostCode TEXT CHECK (LENGTH (ePostcode) = 4 AND ePostCode NOT GLOB '*[^0-9]*'),
+	eMail	TEXT,
+	mobPh TEXT,
+	storeId TEXT,
+	FOREIGN KEY (storeId) REFERENCES Store(storeId)
+);
+
+CREATE TABLE Customer (
+	customerId TEXT PRIMARY KEY NOT NULL CHECK (LENGTH (customerID) = 5 AND customerId NOT GLOB '*[^0-9]*'),
+	cName TEXT NOT NULL,
+	cMobilePh TEXT,
+	cEmail TEXT,
+	cStartDate TEXT
+);
+
+CREATE TABLE "Order" (
+	orderId	TEXT PRIMARY KEY NOT NULL CHECK (LENGTH (orderID) = 5 AND orderId NOT GLOB '*[^0-9]*'),
+	oDate	TEXT,
+	"total" INT,
+	GST INT,
+	deliveryAddress TEXT,
+	orderStatus	TEXT,
+	customerId	TEXT,
+	FOREIGN KEY (customerId) REFERENCES Customer(customerId)
+);
+
+CREATE TABLE OrderDetail (
+	orderId	TEXT,
+	productId	TEXT,
+	quantity TEXT,
+	retailPrice INT,
+	PRIMARY KEY (orderId, productId),
+	FOREIGN KEY(orderId) REFERENCES "Order" (orderId),
+	FOREIGN KEY(productId) REFERENCES Product (productId)
+);
+
+CREATE TABLE Payment (
+	paymentId TEXT PRIMARY KEY NOT NULL CHECK (LENGTH (paymentId) = 5 AND paymentId NOT GLOB '*[^0-9]*'),
+	type TEXT,
+	amount	INT,
+	pDate	TEXT,
+	bankTransactNo TEXT,
+	orderId	TEXT,
+	FOREIGN KEY(orderId) REFERENCES "Order" (orderId)
+);
+
+CREATE TABLE Product (
+	productId TEXT PRIMARY KEY NOT NULL CHECK (LENGTH (productId) = 5 AND productId NOT GLOB '*[^0-9]*'),
+	size TEXT,
+	colour TEXT,
+	style TEXT,
+	quantityOnHand INT,
+	reorderQty INT,
+	retailPrice INT,
+	supplierId TEXT,
+	FOREIGN KEY (supplierId) REFERENCES Supplier (supplierId)
+);
+
+CREATE TABLE ProductSupplier (
+	productId TEXT,
+	supplierId TEXT, 
+	PRIMARY KEY (productId, supplierId),
+	FOREIGN KEY(productId) REFERENCES Product (productId),
+	FOREIGN KEY(supplierId) REFERENCES Supplier (supplierId)
+);
+
+CREATE TABLE Supplier (
+	supplierId TEXT PRIMARY KEY NOT NULL CHECK (LENGTH (supplierId) = 5 AND supplierId NOT GLOB '*[^0-9]*'),
+	supplierName TEXT NOT NULL
+);
