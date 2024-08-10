@@ -30,6 +30,6 @@ This repository contains the files related to my SQL assignment for [Course Name
 - Load the Project Files: Use SQLite Browser to open the .sqbpro files to view the SQL scripts and results.
 - Load the Database: The clothesinc.db file can be opened in SQLite to explore the ClothesInc database created in Task 1.
 
-##License
+## License
 This project is created for educational purposes as part of my coursework at Queensland University of Technology. Please do not use the content for any other purpose without permission.
 
