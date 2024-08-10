@@ -1,0 +1,29 @@
+--Task 2 Q1 List the hotelNo, type and price of each room that is a self or deluxe with price more than $200
+SELECT hotelNo, type, price FROM Room 
+WHERE (type = 'Self' or type = 'Deluxe') and price > 200;
+
+--Task 2 Q2 List the hotelNo which have 3 or more double rooms
+SELECT hotelNo FROM Room WHERE type = 'Double' 
+GROUP BY hotelNo HAVING COUNT(*) >= 3;
+
+--Task 2 Q3 How many different guests visited the Grand Chancellor?
+SELECT COUNT(guestNo) FROM Booking b JOIN Hotel h on h.hotelNo = b.hotelNo 
+WHERE h.hotelName = 'Grand Chancellor';
+
+--Task 2 Q4 What is the total income from bookings for the Westin?
+SELECT SUM(price) FROM Room r JOIN Hotel h ON r.hotelNo = h.hotelNo 
+WHERE h.hotelName = 'Westin';
+
+--Task 2 Q5 List all the guests’ names who have visited more than 3 times
+SELECT guestName FROM Guest g
+JOIN Booking b on g.guestNo = b.guestNo 
+GROUP BY g.guestName HAVING COUNT(*)>3;
+
+--Task 3
+CREATE INDEX guestName_Inx ON Guest(guestName);
+GRANT SELECT, INSERT, UPDATE, DELETE ON Hotel, Room, Guest, Booking TO nikki, phil;
+
+GRANT INSERT ON Booking TO nikki;
+GRANT DELETE ON Booking TO nikki;
+REVOKE INSERT ON Guest TO phil;
+REVOKE DELETE ON Guest TO phil;
